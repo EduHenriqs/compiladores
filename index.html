@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compiladores</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/sweetalert.js"></script>
+
+</head>
+
+<body class="bg-body-secondary">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-9 d-flex align-self-center">
+                                <h4 class="m-0">Analisador Sintático</h4>
+                            </div>
+                            <div class="col-md-3 text-end">
+                                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasWithBothOptions"
+                                    aria-controls="offcanvasWithBothOptions">Gramática </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <label>Sentença</label>
+                                <input type="text" name="sentenca" id="sentenca" class="form-control"
+                                    onchange="montaPilha()">
+                            </div>
+
+                            <div class="col-md-2 d-grid align-itens-center"><br>
+                                <button type="button" class="btn btn-custom" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal" onclick="abrirModal()">
+                                    Gerar Senteça
+                                </button>
+                            </div>
+
+                            <div class="col-md-6 d-grid mt-3" id="div-passo">
+                                <button class="btn btn-custom" type="button" onclick="reconhecimento()">Reconhecimento
+                                    Passo a
+                                    Passo</button>
+                            </div>
+                            <div class="col-md-6 d-grid mt-3" id="div-direto">
+                                <button class="btn btn-custom" type="button"
+                                    onclick="reconhecimentoDireto()">Reconhecimento
+                                    Direto</button>
+                            </div>
+                            <div class="col-md-12 d-grid mt-3 d-none" id="div-reiniciar">
+                                <button class="btn btn-custom" type="button"
+                                    onclick="window.location.reload()">Reiniciar</button>
+                            </div>
+                            <div class="col-md-12 mt-3 d-none text-center" id="div-pilha">
+                                <h5>Entrada</h5>
+                                <div class="d-flex justify-content-center">
+                                    <ul class="pagination pagination-lg text-center" id="pilha">
+                                    </ul>
+                                </div>
+                                <table class="table table-bordered d-none" id="tabela-pilha">
+                                    <thead>
+                                        <th>Pilha</th>
+                                        <th>Entrada</th>
+                                        <th>Ação</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>$S</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="offcanvas offcanvas-bottom" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+            aria-labelledby="offcanvasWithBothOptionsLabel" style="height: 75%;">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Regras da Gramática</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>Gramática</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover">
+                                        <tbody>
+                                            <tr class="m-1">
+                                                <th class="text-center border border-0">S ::=</th>
+                                                <td class="text-center border border-0">bA</td>
+                                                <td class="text-center border border-0"></td>
+                                                <td class="text-center border border-0"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center border border-0">A ::=</th>
+                                                <td class="text-center border border-0 border-end border-dark">aBc</td>
+                                                <td class="text-center border border-0">cAd</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center border border-0">B ::=</th>
+                                                <td class="text-center border border-0 border-end border-dark">bbC</td>
+                                                <td class="text-center border border-0">aDb</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center border border-0">C ::=</th>
+                                                <td class="text-center border border-0 border-end border-dark">cS</td>
+                                                <td class="text-center border border-0 border-end border-dark">dBa</td>
+                                                <td class="text-center border border-0">bCa</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center border border-0">D ::=</th>
+                                                <td class="text-center border border-0 border-end border-dark">aDb</td>
+                                                <td class="text-center border border-0">ε</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>First</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <th class="text-center border border-0">S =</th>
+                                                <td class="text-center border border-0">b</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center border border-0">A =</th>
+                                                <td class="text-center border border-0 border-end border-dark">a</td>
+                                                <td class="text-center border border-0">c</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center border border-0">B =</th>
+                                                <td class="text-center border border-0 border-end border-dark">a</td>
+                                                <td class="text-center border border-0">b</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center border border-0">C =</th>
+                                                <td class="text-center border border-0 border-end border-dark">b</td>
+                                                <td class="text-center border border-0 border-end border-dark">c</td>
+                                                <td class="text-center border border-0">d</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center border border-0">D =</th>
+                                                <td class="text-center border border-0 border-end border-dark">a</td>
+                                                <td class="text-center border border-0">ε</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>Follow</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <th class="text-center border border-0">S =</th>
+                                                <td class="text-center border border-0 border-end border-dark">$</td>
+                                                <td class="text-center border border-0 border-end border-dark">a</td>
+                                                <td class="text-center border border-0 border-end border-dark">c</td>
+                                                <td class="text-center border border-0">d</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center border border-0">A =</th>
+                                                <td class="text-center border border-0">d</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center border border-0">B =</th>
+                                                <td class="text-center border border-0 border-end border-dark">a</td>
+                                                <td class="text-center border border-0">c</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center border border-0">C =</th>
+                                                <td class="text-center border border-0 border-end border-dark">a</td>
+                                                <td class="text-center border border-0">c</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center border border-0">D =</th>
+                                                <td class="text-center border border-0">b</td>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>Tabela de Parsing</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead class="text-center">
+                                            <th>-</th>
+                                            <th>a</th>
+                                            <th>b</th>
+                                            <th>c</th>
+                                            <th>d</th>
+                                            <th>$</th>
+                                        </thead>
+                                        <tbody class="text-center">
+                                            <tr>
+                                                <td>S</td>
+                                                <td>-</td>
+                                                <td>S -> bA</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr>
+                                                <td>A</td>
+                                                <td>A -> aBc</td>
+                                                <td>-</td>
+                                                <td>A -> cAd</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr>
+                                                <td>B</td>
+                                                <td>B -> aDb</td>
+                                                <td>B -> bbC</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr>
+                                                <td>C</td>
+                                                <td>-</td>
+                                                <td>C -> bCa</td>
+                                                <td>C -> cS</td>
+                                                <td>C -> dBa</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr>
+                                                <td>D</td>
+                                                <td>D -> aDb</td>
+                                                <td>D -> ε</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+            data-bs-backdrop="static">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Gerador de Sentenças</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>
