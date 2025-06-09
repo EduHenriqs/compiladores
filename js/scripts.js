@@ -254,6 +254,7 @@ function reconhecimento() {
         $('#tabela-pilha tbody tr:last').append(`<td>${entrada}</td>`)
         $('#tabela-pilha tbody tr:last').append(`<td></td>`)
         $('#pilha li:first').remove();
+        $('ul li:first').addClass('active');
         return true;
 
     } else {
@@ -280,9 +281,6 @@ function reconhecimento() {
             icon: "warning",
             title: `Erro em ${iteracoes} iterações !`
         });
-
-
-
         return false;
     }
 
